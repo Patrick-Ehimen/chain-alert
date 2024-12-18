@@ -1,62 +1,70 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IWallet {
-  // Wallet address
+// Interface for Token
+interface IToken {
   address: string;
-  // Blockchain type, either EVM or Solana
-  chain: "EVM" | "SOLANA";
-  // Network name or identifier
+  symbol: string;
+  balance: string;
   network: string;
-  // User ID associated with the wallet
-  userId: string;
-  // Optional label for the wallet
-  label?: string;
-  // Last checked date for the wallet
-  lastChecked: Date;
-  // List of tokens associated with the wallet
-  tokens: {
-    // Token address
-    address: string;
-    // Token symbol
-    symbol: string;
-    // Token balance
-    balance: string;
-  }[];
 }
 
-// Define the schema for the Wallet model using mongoose
-const walletSchema = new mongoose.Schema<IWallet>(
-  {
-    // Wallet address, required field
-    address: { type: String, required: true },
-    // Blockchain type, either EVM or Solana, required field
-    chain: { type: String, required: true, enum: ["EVM", "SOLANA"] },
-    // Network name or identifier, required field
-    network: { type: String, required: true },
-    // User ID associated with the wallet, required field
-    userId: { type: String, required: true },
-    // Optional label for the wallet
-    label: { type: String },
-    // Last checked date for the wallet, defaults to current date
-    lastChecked: { type: Date, default: Date.now },
-    // List of tokens associated with the wallet
-    tokens: [
-      {
-        // Token address, required field
-        address: { type: String, required: true },
-        // Token symbol, required field
-        symbol: { type: String, required: true },
-        // Token balance, required field
-        balance: { type: String, required: true },
-      },
-    ],
+// Interface for Wallet
+export interface IWallet extends Document {
+  address: string;
+  chain: 'EVM' | 'SOLANA';
+  userId: string;
+  label?: string;
+  tokens: IToken[];
+  lastChecked: Date;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Token Schema
+const TokenSchema = new Schema<IToken>({
+  address: { type: String, required: true },
+  symbol: { type: String, required: true },
+  balance: { type: String, required: true },
+  network: { type: String, required: true }
+});
+
+// Wallet Schema
+const WalletSchema = new Schema<IWallet>({
+  address: { 
+    type: String, 
+    required: true,
+    index: true 
   },
-  // Enable automatic creation of createdAt and updatedAt timestamps
-  { timestamps: true }
-);
+  chain: { 
+    type: String, 
+    required: true,
+    enum: ['EVM', 'SOLANA']
+  },
+  userId: { 
+    type: String, 
+    required: true,
+    index: true
+  },
+  label: { 
+    type: String,
+    default: null
+  },
+  tokens: [TokenSchema],
+  lastChecked: { 
+    type: Date, 
+    default: Date.now 
+  },
+  isActive: { 
+    type: Boolean, 
+    default: true 
+  }
+}, {
+  timestamps: true,
+  versionKey: false
+});
 
-// Create a unique index on the combination of address and chain
-walletSchema.index({ address: 1, chain: 1 }, { unique: true });
+// Compound index for unique wallet per chain per user
+WalletSchema.index({ address: 1, chain: 1, userId: 1 }, { unique: true });
 
-// Export the Wallet model based on the walletSchema
-export const Wallet = mongoose.model<IWallet>("Wallet", walletSchema);
+export const WalletModel = mongoose.model<IWallet>('Wallet', WalletSchema);
