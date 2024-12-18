@@ -1,0 +1,34 @@
+{
+  "name": "chain-alert",
+  "version": "1.0.0",
+  "description": "A backend-only application that allows users to monitor wallet addresses on EVM-compatible blockchains and Solana. The system tracks wallet balances, detects new token purchases, trades, or transactions, and sends real-time notifications via Telegram.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Patrick-Ehimen/chain-alert.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "0xOse",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Patrick-Ehimen/chain-alert/issues"
+  },
+  "homepage": "https://github.com/Patrick-Ehimen/chain-alert#readme",
+  "devDependencies": {
+    "alchemy-sdk": "^3.5.0",
+    "chai": "^5.1.2",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mocha": "^11.0.1",
+    "mongoose": "^8.9.1",
+    "sinon": "^19.0.2",
+    "supertest": "^7.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
