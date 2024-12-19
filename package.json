@@ -38,9 +38,11 @@
   },
   "dependencies": {
     "@solana/web3.js": "^1.98.0",
+    "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",
     "@types/node": "^22.10.2",
     "alchemy-sdk": "^3.5.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "mongoose": "^8.9.1",
     "node-telegram-bot-api": "^0.64.0",
