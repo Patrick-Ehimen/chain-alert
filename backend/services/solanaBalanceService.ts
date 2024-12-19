@@ -1,5 +1,5 @@
-import { Connection, PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import dotenv from 'dotenv';
+import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -11,7 +11,9 @@ class SolanaBalanceService {
   private connection: Connection;
 
   constructor() {
-    this.connection = new Connection(process.env.SOLANA_MAINNET_RPC_URL as string);
+    this.connection = new Connection(
+      process.env.SOLANA_MAINNET_RPC_URL as string
+    );
   }
 
   /**
@@ -20,16 +22,18 @@ class SolanaBalanceService {
    * @returns Promise with balance information
    * @throws Error if wallet address is invalid or network error occurs
    */
-  async getWalletBalance(walletAddress: string): Promise<SolanaBalanceResponse> {
+  async getWalletBalance(
+    walletAddress: string
+  ): Promise<SolanaBalanceResponse> {
     try {
       const publicKey = new PublicKey(walletAddress);
       const balance = await this.connection.getBalance(publicKey);
-      
+
       return {
-        balance: balance / LAMPORTS_PER_SOL // Convert lamports to SOL
+        balance: parseFloat((balance / LAMPORTS_PER_SOL).toFixed(3)), // Convert lamports to SOL
       };
     } catch (error) {
-      console.error('Error fetching Solana balance:', error);
+      console.error("Error fetching Solana balance:", error);
       throw error;
     }
   }
