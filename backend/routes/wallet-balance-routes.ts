@@ -1,7 +1,13 @@
 import { Router } from "express";
-import { getWalletBalance } from "../controllers/wallet-controller";
+import { getWalletBalance } from "../controllers/get-wallet-balance-controller";
 
 const router = Router();
+
+/**
+ * @route GET /api/balance/:walletAddress
+ * @description Get the balance of a specific wallet address
+ * @access Public
+ */
 
 // Define a route to get the wallet balance
 router.get("/balance/:address", async (req, res) => {
