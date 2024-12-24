@@ -4,15 +4,15 @@ import evmService from "../../../backend/services/evmBalanceService";
 async function testEvmBalance() {
   try {
     // Test wallet address - this is Binance's hot wallet, known to have significant balance
-    const testWallet = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+    const testWallet = "0x5Da73693A062a11589F1b5c68434bf7eAff72366";
 
     // Test single chain
-    console.log("\nTesting single chain (Optimism):");
+    console.log("\nTesting single chain (Arbitrum):");
     const ethBalance = await evmService.getWalletBalance(
       testWallet,
-      "optimism"
+      "arbitrum"
     );
-    console.log("Optimism balance:", ethBalance);
+    console.log("Arbitrum balance:", ethBalance);
 
     // Test all chains
     // console.log("\nTesting all chains:");
