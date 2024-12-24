@@ -3,6 +3,7 @@ import path from "path";
 import cors from "cors";
 import dotenv from "dotenv";
 import walletBalanceRoutes from "./routes/wallet-balance-routes";
+import walletRoutes from "./routes/walletRoutes";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(express.static(path.join(__dirname, "../frontend/public")));
 
 // API routes
 app.use("/api", walletBalanceRoutes);
+app.use("/api/wallets", walletRoutes);
 
 // Serve index.html for the root route
 app.get("/", (req, res) => {
