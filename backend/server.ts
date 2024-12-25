@@ -2,13 +2,27 @@ import express from "express";
 import path from "path";
 import cors from "cors";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import walletBalanceRoutes from "./routes/wallet-balance-routes";
 import walletRoutes from "./routes/walletRoutes";
+import { bot } from "../bot/bot";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://localhost:27017/chain-alert";
+
+// Connect to MongoDB
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log("Connected to MongoDB successfully");
+  })
+  .catch((error) => {
+    console.error("MongoDB connection error:", error);
+  });
 
 // Middleware
 app.use(cors());
@@ -28,4 +42,5 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  console.log('Telegram bot is active and listening for commands');
 });
