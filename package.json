@@ -4,8 +4,8 @@
   "description": "A backend-only application that allows users to monitor wallet addresses on EVM-compatible blockchains and Solana. The system tracks wallet balances, detects new token purchases, trades, or transactions, and sends real-time notifications via Telegram.",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "start": "ts-node backend/server.ts",
+    "dev": "nodemon --exec ts-node backend/server.ts",
     "build": "tsc",
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
@@ -49,6 +49,7 @@
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",
     "@types/node": "^22.10.2",
+    "@types/node-telegram-bot-api": "^0.64.7",
     "alchemy-sdk": "^3.5.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
