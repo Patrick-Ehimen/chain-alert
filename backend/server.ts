@@ -42,5 +42,5 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-  console.log('Telegram bot is active and listening for commands');
+  console.log("Telegram bot is active and listening for commands");
 });
