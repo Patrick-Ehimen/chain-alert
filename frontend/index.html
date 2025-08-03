@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Balance Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            white-space: pre-wrap;
+        }
+        .error {
+            color: red;
+            background-color: #ffebee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wallet Balance Checker</h1>
+        <div class="form-group">
+            <label for="walletAddress">Wallet Address:</label>
+            <input type="text" id="walletAddress" placeholder="Enter wallet address (0x... for EVM or Solana address)" />
+        </div>
+        <div class="form-group">
+            <label for="chain">Chain (for EVM addresses):</label>
+            <select id="chain">
+                <option value="ethereum">Ethereum</option>
+                <option value="optimism">Optimism</option>
+                <option value="polygon">Polygon</option>
+                <option value="arbitrum">Arbitrum</option>
+                <option value="base">Base</option>
+            </select>
+        </div>
+        <button onclick="checkBalance()">Check Balance</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function checkBalance() {
+            const walletAddress = document.getElementById('walletAddress').value;
+            const chain = document.getElementById('chain').value;
+            const resultDiv = document.getElementById('result');
+
+            if (!walletAddress) {
+                resultDiv.innerHTML = 'Please enter a wallet address';
+                resultDiv.className = 'error';
+                return;
+            }
+
+            try {
+                resultDiv.innerHTML = 'Loading...';
+                resultDiv.className = '';
+
+                const response = await fetch(`/api/balance/${walletAddress}?chain=${chain}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.innerHTML = JSON.stringify(data, null, 2);
+                    resultDiv.className = '';
+                } else {
+                    resultDiv.innerHTML = `Error: ${data.error || 'Failed to fetch balance'}`;
+                    resultDiv.className = 'error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+                resultDiv.className = 'error';
+            }
+        }
+
+        // Example wallet addresses
+        const examples = {
+            evm: '0xF977814e90dA44bFA03b6295A0616a897441aceC',
+            solana: '72mVYhzqwq5Qq8wnV3eWhwHSejJNQ5HF7ncQHoiSmBE6'
+        };
+
+        // Add example addresses to placeholder
+        document.getElementById('walletAddress').placeholder = 
+            `Example EVM: ${examples.evm}\nExample Solana: ${examples.solana}`;
+    </script>
+</body>
+</html>
